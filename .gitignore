@@ -56,3 +56,4 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+mostrar_evidencies.sh
