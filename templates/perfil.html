@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <h1>Benvingut a l'Àrea Privada, {{ user.username }}</h1>
+    <p>La teva darrera connexió va ser: {{ user.last_login }}</p>
+
+    <hr>
+    <h3>Nivell d'Accés:</h3>
+
+    {% if user.is_superuser %}
+    <div style="background-color: #ffcccc; padding: 10px; border: 1px solid red;">
+        <p><strong>⚠️ PANELL D'ADMINISTRADOR ⚠️</strong></p>
+        <p>Tens accés total al sistema. Pots esborrar bases de dades.</p>
+        <a href="/admin/">Anar al Panell de Control</a>
+    </div>
+    {% else %}
+    <div style="background-color: #e6f7ff; padding: 10px; border: 1px solid blue;">
+        <p><strong>Perfil d'Analista</strong></p>
+        <p>Tens accés de lectura als incidents. Reporta qualsevol anomalia.</p>
+    </div>
+    {% endif %}
+
+    <hr>
+    <!-- Botó de tancar sessió -->
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Tancar Sessió</button>
+    </form>
+</body>
+
+</html>

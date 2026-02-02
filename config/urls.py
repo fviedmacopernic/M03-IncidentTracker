@@ -15,8 +15,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from core.views import perfil_usuari
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # Això activa rutes com: /accounts/login/ i /accounts/logout/
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('perfil/', perfil_usuari, name='perfil'),
 ]
