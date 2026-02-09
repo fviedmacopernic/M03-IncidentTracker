@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Resultats de Cerca</title>
+</head>
+
+<body>
+    <h2>Resultats de la Cerca</h2>
+
+    <p><strong>Query:</strong> {{ query }}</p>
+
+    <hr>
+
+    {% if incidents %}
+    <h3>S'han trobat {{ incidents|length }} incident(s):</h3>
+    <ul>
+        {% for incident in incidents %}
+        <li>
+            <strong>{{ incident.0 }}</strong> - {{ incident.1 }}
+            <br><small>Creador: {{ incident.2 }} | Detectat: {{ incident.3 }}</small>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No s'han trobat incidents.</p>
+    {% endif %}
+
+    <hr>
+    <a href="{% url 'cerca' %}">Nova Cerca</a> |
+    <a href="{% url 'perfil' %}">Tornar al Perfil</a>
+</body>
+
+</html>

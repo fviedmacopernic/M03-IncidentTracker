@@ -22,6 +22,22 @@
     {% endif %}
 
     <hr>
+    <h3>Navegació - Pràctica 3: Auditoria de Seguretat</h3>
+
+    <h4>Vulnerabilitats (Per a proves):</h4>
+    <ul>
+        <li><a href="{% url 'cerca' %}">🔍 Cerca d'Incidents (SQLi Vulnerable)</a></li>
+        <li><a href="{% url 'actualitzar_email' %}">📧 Actualitzar Email (Privilege Escalation)</a></li>
+        <li><a href="{% url 'incident_llista' %}">📋 Llista d'Incidents (XSS amb |safe)</a></li>
+    </ul>
+
+    <h4>Versions Segures:</h4>
+    <ul>
+        <li><a href="{% url 'cerca' %}">🔍 Cerca Segura (utilitzar /secure/cerca/resultats/)</a></li>
+        <li><a href="{% url 'actualitzar_email_segur' %}">📧 Actualitzar Email Segur</a></li>
+    </ul>
+
+    <hr>
     <!-- Botó de tancar sessió -->
     <form action="{% url 'logout' %}" method="post">
         {% csrf_token %}

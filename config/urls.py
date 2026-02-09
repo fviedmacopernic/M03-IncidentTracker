@@ -16,11 +16,39 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from core.views import perfil_usuari
+from core.views import (
+    perfil_usuari,
+    cerca_form,
+    cerca_resultats_vulnerable,
+    cerca_resultats_segura,
+    actualitzar_email_vulnerable,
+    actualitzar_email_segur,
+    incident_detall_vulnerable,
+    incident_detall_segur,
+    incident_llista,
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # Això activa rutes com: /accounts/login/ i /accounts/logout/
+    # Autenticació
     path('accounts/', include('django.contrib.auth.urls')),
     path('perfil/', perfil_usuari, name='perfil'),
+    
+    # APARTAT 2 & 3: Cerca d'incidents (VULNERABLE)
+    path('cerca/', cerca_form, name='cerca'),
+    path('cerca/resultats/', cerca_resultats_vulnerable, name='cerca_resultats'),
+    
+    # APARTAT 4: Actualització d'email (VULNERABLE - Privilege Escalation)
+    path('actualitzar-email/', actualitzar_email_vulnerable, name='actualitzar_email'),
+    
+    # APARTAT 7: Detall d'incident (VULNERABLE - IDOR)
+    path('incident/<int:id>/', incident_detall_vulnerable, name='incident_detall_vulnerable'),
+    
+    # APARTAT 9: Llista d'incidents (XSS amb |safe)
+    path('incidents/', incident_llista, name='incident_llista'),
+    
+    # VERSIONS SEGURES (APARTAT 6 & 8)
+    path('secure/cerca/resultats/', cerca_resultats_segura, name='cerca_resultats_segura'),
+    path('secure/actualitzar-email/', actualitzar_email_segur, name='actualitzar_email_segur'),
+    path('secure/incident/<int:id>/', incident_detall_segur, name='incident_detall_segur'),
 ]

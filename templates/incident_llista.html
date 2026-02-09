@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Els Meus Incidents</title>
+</head>
+
+<body>
+    <h2>Els Meus Incidents de Seguretat</h2>
+
+    <p>Usuari: <strong>{{ user.username }}</strong></p>
+
+    <hr>
+
+    {% if incidents %}
+    <h3>Incidents creats per tu:</h3>
+    <ul>
+        {% for incident in incidents %}
+        <li>
+            <!-- ⚠️ VULNERABILITAT XSS: El filtre |safe desactiva l'escapament HTML -->
+            <strong>{{ incident.title|safe }}</strong> - {{ incident.get_severity_display }}
+            <br><small>{{ incident.description }}</small>
+            <br><a href="{% url 'incident_detall_vulnerable' incident.id %}">Veure Detall</a>
+        </li>
+        <br>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No tens incidents creats.</p>
+    {% endif %}
+
+    <hr>
+    <p style="color: red;">
+        <strong>⚠️ ATENCIÓ:</strong> Aquesta plantilla utilitza el filtre <code>|safe</code> al títol.<br>
+        Payload XSS d'exemple: <code>&lt;script&gt;alert(document.cookie)&lt;/script&gt;</code>
+    </p>
+
+    <hr>
+    <a href="{% url 'cerca' %}">Cercar Incidents</a> |
+    <a href="{% url 'perfil' %}">Tornar al Perfil</a>
+</body>
+
+</html>

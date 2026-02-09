@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class SecurityIncident(models.Model):
@@ -19,6 +20,7 @@ class SecurityIncident(models.Model):
         verbose_name='Severidad'
     )
     detected_at = models.DateTimeField(auto_now_add=True, verbose_name='Detectado en')
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='incidents', verbose_name='Creador')
     
     class Meta:
         verbose_name = 'Incidente de Seguridad'

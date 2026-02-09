@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Actualitzar Email</title>
+</head>
+
+<body>
+    <h2>Actualitzar Correu Electrònic</h2>
+
+    {% if message %}
+    <p style="color: green;"><strong>{{ message }}</strong></p>
+    {% endif %}
+
+    <p><strong>Email actual:</strong> {{ current_email }}</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <p>
+            <label>Nou email:</label>
+            <input type="text" name="email" value="{{ current_email }}" size="50">
+        </p>
+        <button type="submit">Actualitzar</button>
+    </form>
+
+    <hr>
+    <p style="color: red;">
+        <strong>⚠️ ATENCIÓ:</strong> Aquesta vista és vulnerable a SQL Injection.<br>
+        Payload d'exemple per escalada de privilegis:<br>
+        <code>test@test.com', is_superuser = TRUE WHERE id = {{ user.id }}; --</code>
+    </p>
+
+    <hr>
+    <a href="{% url 'perfil' %}">Tornar al Perfil</a>
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cerca d'Incidents</title>
+</head>
+<body>
+    <h2>Cercador d'Incidents de Seguretat</h2>
+    
+    <form method="GET" action="{% url 'cerca_resultats' %}">
+        <p>
+            <label>Cerca per títol:</label>
+            <input type="text" name="q" placeholder="Introdueix el text a cercar">
+        </p>
+        <button type="submit">Cercar</button>
+    </form>
+    
+    <hr>
+    <a href="{% url 'perfil' %}">Tornar al Perfil</a>
+</body>
+</html>

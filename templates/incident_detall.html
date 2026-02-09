@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Detall de l'Incident</title>
+</head>
+
+<body>
+    <h2>Detall de l'Incident #{{ incident.id }}</h2>
+
+    <table border="1" cellpadding="10">
+        <tr>
+            <th>Títol:</th>
+            <td>{{ incident.title }}</td>
+        </tr>
+        <tr>
+            <th>Descripció:</th>
+            <td>{{ incident.description }}</td>
+        </tr>
+        <tr>
+            <th>Severitat:</th>
+            <td>{{ incident.get_severity_display }}</td>
+        </tr>
+        <tr>
+            <th>Creador:</th>
+            <td>{{ incident.creator.username }}</td>
+        </tr>
+        <tr>
+            <th>Detectat:</th>
+            <td>{{ incident.detected_at }}</td>
+        </tr>
+    </table>
+
+    <hr>
+    <a href="{% url 'incident_llista' %}">Tornar a la Llista</a> |
+    <a href="{% url 'perfil' %}">Tornar al Perfil</a>
+</body>
+
+</html>

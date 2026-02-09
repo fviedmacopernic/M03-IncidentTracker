@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Resultats de Cerca (Segur)</title>
+</head>
+
+<body>
+    <h2>Resultats de la Cerca (Versió Segura)</h2>
+
+    <p><strong>Query:</strong> {{ query }}</p>
+
+    <hr>
+
+    {% if incidents %}
+    <h3>S'han trobat {{ incidents|length }} incident(s) dels teus:</h3>
+    <ul>
+        {% for incident in incidents %}
+        <li>
+            <strong>{{ incident.title }}</strong> - {{ incident.description }}
+            <br><small>Detectat: {{ incident.detected_at }}</small>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No s'han trobat incidents.</p>
+    {% endif %}
+
+    <hr>
+    <p style="color: green;">
+        <strong>✅ SEGUR:</strong> Aquesta versió utilitza l'ORM de Django amb prepared statements.
+    </p>
+
+    <hr>
+    <a href="{% url 'cerca' %}">Nova Cerca</a> |
+    <a href="{% url 'perfil' %}">Tornar al Perfil</a>
+</body>
+
+</html>
