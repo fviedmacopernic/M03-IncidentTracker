@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,12 +21,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-86t#)r+-85twz)$mgg23ud6-5*+g5v$3*febtzff9&3-)8*+b+'
+# En producció/CI usa la variable d'entorn SECRET_KEY
+# En local manté el valor per defecte (dev only)
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY',
+    'django-insecure-86t#)r+-85twz)$mgg23ud6-5*+g5v$3*febtzff9&3-)8*+b+'
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']  # Necessari per a CI/CD (GitHub Actions, Jenkins)
 
 
 # Application definition
@@ -73,16 +79,35 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'incident_db',
-        'USER': 'postgres',
-        'PASSWORD': 'supersecret',
-        'HOST': 'localhost',
-        'PORT': '5432',
+# Si hi ha DATABASE_URL al medi ambient, usa SQLite (per a CI/CD)
+# Exemple: DATABASE_URL=sqlite:///db_ci.sqlite3
+_db_url = os.environ.get('DATABASE_URL', '')
+if _db_url.startswith('sqlite:////'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / _db_url.replace('sqlite:////', ''),
+        }
     }
-}
+elif _db_url.startswith('sqlite:///'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / _db_url.replace('sqlite:///', ''),
+        }
+    }
+else:
+    # Per defecte: Postgres local (contenidor cc-db del projecte P3)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'incident_db',
+            'USER': 'ciberchurros',
+            'PASSWORD': 'ciberchurros_dev',
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
+    }
 
 
 # Password validation

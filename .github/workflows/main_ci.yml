@@ -1,0 +1,57 @@
+name: CI - Auditoria RBAC (DevSecOps P5)
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  security-audit:
+    name: "🔒 Auditoria de Seguretat RBAC"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "📥 Checkout del codi"
+        uses: actions/checkout@v4
+
+      - name: "🐍 Configurar Python 3.11"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: "📦 Instal·lar dependències Python"
+        run: pip install -r requirements.txt
+
+      - name: "🦊 Instal·lar Firefox i Geckodriver"
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y firefox
+          # Descarregar geckodriver
+          GECKODRIVER_VERSION=$(curl -s https://api.github.com/repos/mozilla/geckodriver/releases/latest | grep tag_name | cut -d '"' -f 4)
+          wget -q "https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz"
+          tar -xzf "geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz"
+          sudo mv geckodriver /usr/local/bin/
+          geckodriver --version
+
+      - name: "🗄️ Executar migracions (SQLite per a CI)"
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          DEBUG: "True"
+          DATABASE_URL: "sqlite:///db_ci.sqlite3"
+        run: python manage.py migrate --run-syncdb
+
+      - name: "🔒 Executar Tests de Seguretat Selenium"
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          DEBUG: "True"
+          DATABASE_URL: "sqlite:///db_ci.sqlite3"
+          MOZ_HEADLESS: "1"
+        run: python manage.py test core.tests_selenium --verbosity=2
+
+      - name: "✅ Tests Unitaris Addicionals"
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          DEBUG: "True"
+          DATABASE_URL: "sqlite:///db_ci.sqlite3"
+        run: python manage.py test core --verbosity=2
