@@ -1,0 +1,10 @@
+{
+    "appium:platformName": "Android",
+    "appium:deviceName": "emulator-5554",
+    "appium:automationName": "UiAutomator2",
+    "appium:appPackage": "com.example.incidenttracker",
+    "appium:appActivity": ".MainActivity",
+    "appium:app": "/home/vonashura/GIT/M03/M03-IncidentTracker/appium_tests/IncidentTracker.apk",
+    "appium:noReset": false,
+    "appium:newCommandTimeout": 120
+}

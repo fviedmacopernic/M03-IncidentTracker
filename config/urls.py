@@ -26,6 +26,7 @@ from core.views import (
     incident_detall_vulnerable,
     incident_detall_segur,
     incident_llista,
+    api_get_incidents,
 )
 
 urlpatterns = [
@@ -51,4 +52,7 @@ urlpatterns = [
     path('secure/cerca/resultats/', cerca_resultats_segura, name='cerca_resultats_segura'),
     path('secure/actualitzar-email/', actualitzar_email_segur, name='actualitzar_email_segur'),
     path('secure/incident/<int:id>/', incident_detall_segur, name='incident_detall_segur'),
+
+    # PART 6 — P6: API JSON per a l'App Mòbil
+    path('api/incidents/', api_get_incidents, name='api_get_incidents'),
 ]

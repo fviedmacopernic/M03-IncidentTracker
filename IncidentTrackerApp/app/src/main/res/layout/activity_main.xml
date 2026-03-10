@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#1A1A2E"
+    tools:context=".MainActivity">
+
+    <!-- Títol de l'App -->
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="IncidentTracker — P6"
+        android:textColor="#E94560"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:paddingTop="24dp"
+        android:paddingBottom="8dp" />
+
+    <TextView
+        android:id="@+id/tv_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Consulta incidents de PostgreSQL via Django API"
+        android:textColor="#AAAACC"
+        android:textSize="13sp"
+        android:gravity="center"
+        android:paddingBottom="24dp" />
+
+    <!-- BOTÓ PRINCIPAL — ID usat per Appium Inspector -->
+    <!-- resource-id Appium: com.example.incidenttracker:id/copernic_button -->
+    <Button
+        android:id="@+id/copernic_button"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="Obtenir Incidents"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#E94560"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Indicador de càrrega -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <!-- Etiqueta de resultat -->
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="#00FF88"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:paddingBottom="8dp" />
+
+    <!-- Llista d'incidents retornats per l'API -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/tv_incidents_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="(Clica per carregar incidents...)"
+            android:textColor="#CCCCDD"
+            android:textSize="14sp"
+            android:fontFamily="monospace"
+            android:padding="12dp"
+            android:background="#16213E"
+            android:lineSpacingMultiplier="1.5" />
+
+    </ScrollView>
+
+</LinearLayout>

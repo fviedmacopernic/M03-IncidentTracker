@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db import connection
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from .models import SecurityIncident
 
 # ============================================
@@ -150,6 +151,32 @@ def incident_detall_segur(request, id):
     return render(request, 'incident_detall.html', {
         'incident': incident
     })
+
+# ============================================
+# PART 6 — P6: API JSON PER A L'APP MÒBIL
+# ============================================
+
+@csrf_exempt
+def api_get_incidents(request):
+    """
+    API pública JSON per a l'App mòbil Android.
+    Retorna tots els incidents de la BD en format JSON.
+    Endpoint: GET /api/incidents/
+    """
+    incidents_qs = SecurityIncident.objects.all().order_by('-detected_at')
+    data = [
+        {
+            'id': inc.id,
+            'title': inc.title,
+            'description': inc.description,
+            'severity': inc.severity,
+            'detected_at': inc.detected_at.isoformat(),
+            'creator': inc.creator.username,
+        }
+        for inc in incidents_qs
+    ]
+    return JsonResponse({'incidents': data, 'total': len(data)}, json_dumps_params={'ensure_ascii': False})
+
 
 # ============================================
 # VISTA ORIGINAL DEL PERFIL
